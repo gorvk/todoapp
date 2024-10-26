@@ -1,0 +1,6 @@
+.vscode
+.env
+
+bin
+
+go.sum
