@@ -15,8 +15,9 @@ import (
 
 func main() {
 	initializers.LoadEnv()
+	initializers.ConnectDB()
 
-	server := configureServe()
+	server := configureServer()
 
 	go startServer(server)
 
@@ -25,7 +26,8 @@ func main() {
 
 // starting the server
 func startServer(server *http.Server) {
-	fmt.Println("Server started at " + server.Addr)
+	apiHost := os.Getenv("API_HOST")
+	fmt.Println("Server started at " + apiHost + server.Addr)
 	err := server.ListenAndServe()
 
 	if err != nil {

@@ -7,5 +7,5 @@ import (
 )
 
 func init() {
-	http.HandleFunc("GET /api/todo", controllers.AddTodo)
+	http.HandleFunc("GET /api/todo", controllers.GetAllTodo)
 }

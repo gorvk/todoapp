@@ -4,23 +4,19 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"time"
 )
 
 // configuring server
-func configureServe() *http.Server {
+func configureServer() *http.Server {
 	fmt.Println("Configuring Server...")
 
 	port := os.Getenv("API_PORT")
 	server := &http.Server{
-		Addr:         ":" + port,
-		Handler:      addCorsHeaders(http.DefaultServeMux),
-		IdleTimeout:  120 * time.Second,
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 10 * time.Second,
+		Addr:    ":" + port,
+		Handler: addCorsHeaders(http.DefaultServeMux),
 	}
 
-	fmt.Println("Configuration Complete!")
+	fmt.Println("Configuration Completed!")
 	return server
 }
 
