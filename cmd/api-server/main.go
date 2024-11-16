@@ -19,9 +19,9 @@ func main() {
 
 	server := configureServer()
 
-	go startServer(server)
+	go listenServerFailure(server)
 
-	listenServerFailure(server)
+	startServer(server)
 }
 
 // starting the server
