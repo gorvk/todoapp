@@ -8,6 +8,8 @@ import (
 
 func init() {
 	http.HandleFunc("GET /api/todo", controllers.GetAll)
+	http.HandleFunc("GET /api/todo/{id}", controllers.GetById)
 	http.HandleFunc("POST /api/todo", controllers.Create)
+	http.HandleFunc("PUT /api/todo", controllers.Update)
 	http.HandleFunc("DELETE /api/todo", controllers.Delete)
 }
