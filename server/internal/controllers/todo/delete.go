@@ -1,30 +1,15 @@
 package controllers
 
 import (
-	"encoding/json"
-	"io"
 	"net/http"
 
 	models "github.com/gorvk/todoapp/internal/models/todo"
-	"github.com/gorvk/todoapp/internal/types"
 	"github.com/gorvk/todoapp/internal/utils"
 )
 
 func Delete(w http.ResponseWriter, r *http.Request) {
-	d, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	var input = types.Todo{}
-	err = json.Unmarshal(d, &input)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	err = models.Delete(input.Id)
+	id := r.PathValue("id")
+	err := models.Delete(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

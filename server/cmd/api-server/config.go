@@ -26,7 +26,7 @@ func addCorsHeaders(handler http.Handler) http.Handler {
 		clientUrl := os.Getenv("CLIENT_URL")
 
 		w.Header().Set("Access-Control-Allow-Origin", clientUrl)
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
 
