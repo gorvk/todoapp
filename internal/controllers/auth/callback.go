@@ -1,10 +1,12 @@
 package controllers
 
 import (
+	"encoding/json"
 	"net/http"
 	"time"
 
 	"github.com/gorvk/todoapp/internal/initializers"
+	"github.com/gorvk/todoapp/internal/types"
 )
 
 func Callback(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +25,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var profile map[string]interface{}
+	var profile types.Profile
 	if err := idToken.Claims(&profile); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -38,7 +40,13 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	}
 	http.SetCookie(w, cookie)
 
-	_, err = w.Write([]byte("success"))
+	response, err := json.Marshal(profile)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	_, err = w.Write(response)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

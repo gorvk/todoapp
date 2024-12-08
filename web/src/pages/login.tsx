@@ -17,8 +17,8 @@ export function Login(props: { isCallback: boolean }) {
     const callbackData = async () => {
       const code = searchParams.get("code");
       if (code) {
-        await callback(code);
-        navigate("/home");
+        const state = await callback(code);
+        navigate("/home", { state });
       }
     };
 

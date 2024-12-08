@@ -4,8 +4,10 @@ import { TodoForm } from "../components/todo/TodoForm";
 import { TodoData } from "../models/types";
 import { getAllTodos, updateTodo, deleteTodo, addTodo } from "../svc/todo";
 import add from "../assets/add.svg";
+import { useLocation } from "react-router-dom";
 
 export function Home() {
+  const location = useLocation();
   const [todoData, setTodoData] = useState<TodoData[]>([]);
   const [isAddEnabled, setIsAddEnabled] = useState<boolean>(false);
   useEffect(() => {
@@ -57,6 +59,8 @@ export function Home() {
   }
   return (
     <>
+      <h1>{location.state.nickname}</h1>
+      <h1>{location.state.name}</h1>
       {todoData.map((data) => (
         <Todo
           key={data.id}
