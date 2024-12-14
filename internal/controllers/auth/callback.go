@@ -31,9 +31,16 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	rawIDToken, ok := token.Extra("id_token").(string)
+
+	if !ok {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	cookie := &http.Cookie{
 		Name:     "access_token",
-		Value:    token.AccessToken,
+		Value:    rawIDToken,
 		Expires:  time.Now().Add(time.Hour * 168),
 		HttpOnly: true,
 		Path:     "/",
