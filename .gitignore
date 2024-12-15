@@ -4,6 +4,7 @@ tmp
 bin
 go.sum
 tmp
+db-data
 
 # Logs
 logs
