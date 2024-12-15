@@ -1,24 +1,37 @@
-export const getMethodGetHeader = (): RequestInit | undefined => {
+export const getMethodGetHeader = (): RequestInit => {
     return {
         method: "GET",
-        credentials: "include"
+        headers: {
+            'Authorization': `${localStorage.getItem('id_token')}`
+        }
     }
 }
 
-// eslint-disable-next-line
-export const getMethodPostHeader = (payload: any): RequestInit | undefined => {
+export const getMethodPostHeader = (payload: any): RequestInit => {
     return {
         method: "POST",
         body: JSON.stringify(payload),
-        credentials: "include"
+        headers: {
+            'Authorization': `${localStorage.getItem('id_token')}`
+        }
     }
 }
 
-// eslint-disable-next-line
-export const getMethodPutHeader = (payload: any): RequestInit | undefined => {
+export const getMethodPutHeader = (payload: any): RequestInit => {
     return {
         method: "PUT",
         body: JSON.stringify(payload),
-        credentials: "include"
+        headers: {
+            'Authorization': `${localStorage.getItem('id_token')}`
+        }
+    }
+}
+
+export const getMethodDeleteHeader = (): RequestInit => {
+    return {
+        method: "DELETE",
+        headers: {
+            'Authorization': `${localStorage.getItem('id_token')}`
+        }
     }
 }

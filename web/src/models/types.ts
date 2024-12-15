@@ -10,14 +10,16 @@ export type CommonResponse = {
 }
 
 export type Profile = {
-    aud: string;
-    exp: string;
-    iat: string;
-    iss: string;
-    name: string;
-    nickname: string;
-    picture: string;
-    sid: string;
-    sub: string;
-    updated_at: string;
+    name?: string;
+    nickname?: string;
+    family_name?: string;
+    middle_name?: string;
+    picture?: string;
+    email?: string;
+    email_verified?: boolean;
+    gender?: string;
+    birthdate?: string;
+    phone_number?: string;
+    phone_number_verified?: boolean;
+    updated_at?: string;
 }

@@ -1,33 +1,26 @@
 import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { callback, login } from "../svc/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useAuth0 } from "@auth0/auth0-react";
 import { slice as userSlice } from "../state/slices/user";
+import { AppState } from "../state/store";
 
-export function Auth(props: { isCallback: boolean }) {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+export function Auth() {
+  const { loginWithPopup, getIdTokenClaims } = useAuth0();
   const dispatch = useDispatch();
-  const { isCallback } = props;
+  const currentUser = useSelector((state: AppState) => state.currentUser);
 
   useEffect(() => {
-    const callbackData = async () => {
-      const code = searchParams.get("code");
-      if (code) {
-        const profile = await callback(code);
-        dispatch(userSlice.actions.setCurrentUser(profile));
-        navigate("/dashboard");
+    const authenticateUser = async () => {
+      await loginWithPopup();
+      const claim = await getIdTokenClaims();
+      if (claim) {
+        const idToken = claim.__raw;
+        localStorage.setItem('id_token', idToken)
+        dispatch(userSlice.actions.setCurrentUser(claim));
       }
     };
-
-    if (isCallback) {
-      callbackData();
-      return;
-    } else {
-      (async () => {
-        const res = await login();
-        window.location.href = res.url;
-      })();
+    if (!currentUser) {
+      authenticateUser();
     }
   }, []);
 
