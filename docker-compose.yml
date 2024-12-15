@@ -17,12 +17,12 @@ services:
     ports:
       - ${API_PORT}:9090
     depends_on:
-      - todo_app_db
+      - todo_db
     volumes:
       - ./:/app
     # command: go run ./cmd/migrate
 
-  todo_app_db:
+  todo_db:
     image: postgres:16.2
     environment:
       - POSTGRES_USER=${DB_USER}

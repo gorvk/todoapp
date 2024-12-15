@@ -4,8 +4,10 @@ WORKDIR /app
 
 COPY . .
 
-RUN go install github.com/air-verse/air@latest
+RUN go mod download
 
-RUN alias air='$(go env GOPATH)/bin/air'
+RUN go mod tidy
+
+RUN go install github.com/air-verse/air@latest
 
 CMD ["air", "-c", ".air.toml"]  
