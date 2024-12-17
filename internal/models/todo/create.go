@@ -5,10 +5,10 @@ import (
 	"github.com/gorvk/todoapp/internal/types"
 )
 
-func Create(todo types.Todo) error {
+func Create(todo types.Todo, userClaim types.UserClaim) error {
 	db := initializers.GetDBInstance()
 
-	stmt, err := db.Prepare("INSERT INTO Todos VALUES(gen_random_uuid(), $1, $2)")
+	stmt, err := db.Prepare("INSERT INTO Todos VALUES(gen_random_uuid(), $1, $2, $3)")
 	if err != nil {
 		return err
 	}
@@ -18,6 +18,7 @@ func Create(todo types.Todo) error {
 	_, err = stmt.Exec(
 		todo.Title,
 		todo.IsCompleted,
+		userClaim.UserId,
 	)
 
 	return err

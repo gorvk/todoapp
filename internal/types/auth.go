@@ -1,7 +1,8 @@
 package types
 
 import (
-	"context"
+	"fmt"
+	"net/http"
 
 	"github.com/coreos/go-oidc/v3/oidc"
 	"golang.org/x/oauth2"
@@ -12,13 +13,23 @@ type Authenticator struct {
 	oauth2.Config
 }
 
-func (a *Authenticator) VerifyIDToken(ctx context.Context, token string) (*oidc.IDToken, error) {
+type UserClaim struct {
+	UserId string `json:"sub" db:"user_id"`
+}
 
-	oidcConfig := &oidc.Config{
+func (a *Authenticator) VerifyIDToken(r *http.Request) (UserClaim, error) {
+	var userClaim UserClaim = UserClaim{}
+	authToken := r.Header.Get("Authorization")
+	verifier := a.Verifier(&oidc.Config{
 		ClientID: a.ClientID,
-	}
-	verifier := a.Verifier(oidcConfig)
-	idToken, err := verifier.Verify(ctx, token)
+	})
 
-	return idToken, err
+	idToken, err := verifier.Verify(r.Context(), authToken)
+	if err != nil {
+		return userClaim, err
+	}
+
+	err = idToken.Claims(&userClaim)
+	fmt.Println(userClaim)
+	return userClaim, err
 }

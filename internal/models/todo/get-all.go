@@ -5,14 +5,16 @@ import (
 	"fmt"
 
 	"github.com/gorvk/todoapp/internal/initializers"
+	"github.com/gorvk/todoapp/internal/types"
 )
 
-func GetAll() (*sql.Rows, error) {
+func GetAll(userClaim types.UserClaim) (*sql.Rows, error) {
 	db := initializers.GetDBInstance()
 	if db == nil {
 		return nil, fmt.Errorf("nil db instance")
 	}
-	query := "SELECT * from Todos"
+	query := fmt.Sprintf("SELECT * from Todos WHERE user_id = '%v'", userClaim.UserId)
+	fmt.Println(query)
 	rows, err := db.Query(query)
 	return rows, err
 }

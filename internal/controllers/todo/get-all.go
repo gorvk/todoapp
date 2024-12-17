@@ -12,16 +12,15 @@ import (
 
 func GetAll(w http.ResponseWriter, r *http.Request) {
 	auth := initializers.GetAuthInstance()
-	idToken := r.Header.Get("Authorization")
-	_, err := auth.VerifyIDToken(r.Context(), idToken)
-	fmt.Println(idToken)
+	userClaim, err := auth.VerifyIDToken(r)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 
-	rows, err := models.GetAll()
+	rows, err := models.GetAll(userClaim)
 	if err != nil {
+		fmt.Println("response")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -34,6 +33,7 @@ func GetAll(w http.ResponseWriter, r *http.Request) {
 			&row.Id,
 			&row.Title,
 			&row.IsCompleted,
+			&row.UserId,
 		)
 		todos = append(todos, row)
 	}
